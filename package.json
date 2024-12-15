@@ -1,7 +1,7 @@
 {
   "name": "git-switcher",
-  "displayName": "git-switcher",
-  "description": "Extension  that helps you easily switch between different git users",
+  "displayName": "Git Switcher",
+  "description": "Extension that helps you easily switch between different git users",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.96.0"
@@ -9,15 +9,27 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "git-switcher.helloWorld",
-        "title": "Hello World"
+        "command": "git-switcher.setupUser",
+        "title": "Git Switcher: Setup Git User"
       }
-    ]
+    ],
+    "configuration": {
+      "type": "object",
+      "properties": {
+        "git-switcher.users": {
+          "type": "array",
+          "description": "List of users (name and email)",
+          "default": []
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
