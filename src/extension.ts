@@ -15,13 +15,21 @@ const getCurrentUser = async (): Promise<User> => {
     email: "",
   };
   try {
+    const workspaceFolders = vscode.workspace.workspaceFolders;
+    let repoPath = "";
+    if (!workspaceFolders || workspaceFolders.length === 0) {
+      vscode.window.showWarningMessage("No workspace folder found, trying to get global user");
+    } else {
+      repoPath = workspaceFolders[0].uri.fsPath;
+    }
+
     const result = await new Promise<string>((resolve, reject) => {
-      exec("git config user.name && git config user.email", (err, stdout) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(stdout.trim());
-        }
+      exec("git config user.name && git config user.email", { cwd: repoPath || undefined }, (err, stdout) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(stdout.trim());
+      }
       });
     });
 
